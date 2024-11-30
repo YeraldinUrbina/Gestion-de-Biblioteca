@@ -1,0 +1,273 @@
+create database SGB3;
+use SGB3;
+show tables;
+CREATE TABLE Libro (
+    ID_Libro INT PRIMARY KEY AUTO_INCREMENT,
+    Titulo VARCHAR(255) NOT NULL,
+    Autor VARCHAR(255) NOT NULL,
+    Editorial VARCHAR(255) NOT NULL,
+    Año_Publicacion INT NOT NULL,
+    Genero VARCHAR(100),
+    ISBN VARCHAR(20) UNIQUE,
+    Estado ENUM('disponible', 'prestado', 'mantenimiento') NOT NULL,
+    Cantidad INT DEFAULT 1
+);  
+
+CREATE TABLE Usuario (
+    ID_Usuario INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(255) NOT NULL,
+    Tipo ENUM('estudiante', 'docente', 'externo') NOT NULL,
+    Telefono VARCHAR(20),
+    CorreoElectronico VARCHAR(100) UNIQUE NOT NULL
+);
+
+CREATE TABLE Prestamo (
+    ID_Prestamo INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Usuario INT,
+    ID_Libro INT,
+    Fecha_Prestamo DATE NOT NULL,
+    Fecha_Devolucion DATE NOT NULL,
+    Estado ENUM('pendiente', 'devuelto', 'retraso') NOT NULL,
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario) ON DELETE CASCADE,
+    FOREIGN KEY (ID_Libro) REFERENCES Libro(ID_Libro) ON DELETE CASCADE
+);
+
+CREATE TABLE Reserva (
+    ID_Reserva INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Usuario INT,
+    ID_Libro INT,
+    Fecha_Reserva DATE NOT NULL,
+    Estado ENUM('activa', 'vencida') NOT NULL,
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario) ON DELETE CASCADE,
+    FOREIGN KEY (ID_Libro) REFERENCES Libro(ID_Libro) ON DELETE CASCADE
+);
+
+CREATE TABLE Administrador (
+    ID_Administrador INT PRIMARY KEY AUTO_INCREMENT,
+    Admin_user VARCHAR(255) NOT NULL,
+    Contraseña VARCHAR(255) NOT NULL,
+    Permisos ENUM('gestionar_libros', 'gestionar_usuarios', 'gestionar_prestamos', 'todos') NOT NULL
+);
+INSERT INTO Libro (Titulo, Autor, Editorial, Año_Publicacion, Genero, ISBN, Estado, Cantidad)
+VALUES 
+('Cien Años de Soledad', 'Gabriel García Márquez', 'Editorial Sudamericana', 1967, 'Realismo Mágico', '978-3-16-148410-0', 'disponible', 5),
+('Don Quijote de la Mancha', 'Miguel de Cervantes', 'Editorial Planeta', 1605, 'Ficción', '978-84-08-11773-1', 'disponible', 3),
+('1984', 'George Orwell', 'Secker & Warburg', 1949, 'Distopía', '978-0-452-28423-4', 'prestado', 2),
+('El Señor de los Anillos', 'J.R.R. Tolkien', 'George Allen & Unwin', 1954, 'Fantasía', '978-0-618-12902-4', 'mantenimiento', 1);
+
+
+INSERT INTO Usuario (Nombre, Tipo, Telefono, CorreoElectronico)
+VALUES 
+('Juan Pérez', 'estudiante', '555-1234', 'juan.perez@ejemplo.com'),
+('María Gómez', 'docente', '555-5678', 'maria.gomez@ejemplo.com'),
+('Carlos Rodríguez', 'externo', '555-8765', 'carlos.rodriguez@ejemplo.com');
+
+
+INSERT INTO Prestamo (ID_Usuario, ID_Libro, Fecha_Prestamo, Fecha_Devolucion, Estado)
+VALUES 
+(1, 2, '2024-11-01', '2024-11-15', 'pendiente'),
+(2, 3, '2024-11-05', '2024-11-19', 'pendiente'),
+(3, 1, '2024-11-10', '2024-11-24', 'pendiente');
+
+
+
+INSERT INTO Reserva (ID_Usuario, ID_Libro, Fecha_Reserva, Estado)
+VALUES 
+(1, 4, '2024-11-01', 'activa'),
+(2, 1, '2024-11-05', 'vencida'),
+(3, 2, '2024-11-07', 'activa');
+
+
+
+
+INSERT INTO Administrador (Admin_user, Contraseña, Permisos)
+VALUES 
+('admin1', 'password123', 'todos'),
+('admin2', 'admin456', 'gestionar_libros'),
+('admin3', 'admin789', 'gestionar_usuarios');
+
+CREATE TABLE imagenes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    imagen_url VARCHAR(4000) NOT NULL,
+    descripcion varchar(255) NOT NULL
+);
+insert into imagenes(imagen_url,descripcion)value('https://www.penguinlibros.com/mx/4394455-large_default/harry-potter-y-la-camara-secreta-harry-potter-2.webp','harry potter');
+
+insert into imagenes(imagen_url,descripcion)value('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrckP5QO40_Rciz-hcLiIHnl3NcpEqdANYvg&s','don quijote');
+
+
+
+CREATE TABLE Ejemplares (
+    id_ejemplar INT AUTO_INCREMENT PRIMARY KEY,
+    id_libro INT,
+    disponible BOOLEAN DEFAULT TRUE,
+    fecha_ingreso DATE,
+    FOREIGN KEY (id_libro) REFERENCES Libro(id_libro)
+);
+
+
+CREATE TABLE Editoriales (
+    id_editorial INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_editorial VARCHAR(255) NOT NULL,
+    direccion VARCHAR(255),
+    telefono VARCHAR(50)
+);
+
+drop database SGB3;
+SELECT Titulo, Autor 
+FROM Libro;
+
+
+create database SGB3;
+use SGB3;
+show tables;
+CREATE TABLE Libro (
+    ID_Libro INT PRIMARY KEY AUTO_INCREMENT,
+    Titulo VARCHAR(255) NOT NULL,
+    Autor VARCHAR(255) NOT NULL,
+    Editorial VARCHAR(255) NOT NULL,
+    Año_Publicacion INT NOT NULL,
+    Genero VARCHAR(100),
+    ISBN VARCHAR(20) UNIQUE,
+    Estado ENUM('disponible', 'prestado', 'mantenimiento') NOT NULL,
+    Cantidad INT DEFAULT 1
+);  
+
+CREATE TABLE Usuario (
+    ID_Usuario INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(255) NOT NULL,
+    Tipo ENUM('estudiante', 'docente', 'externo') NOT NULL,
+    Telefono VARCHAR(20),
+    CorreoElectronico VARCHAR(100) UNIQUE NOT NULL
+);
+
+CREATE TABLE Prestamo (
+    ID_Prestamo INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Usuario INT,
+    ID_Libro INT,
+    Fecha_Prestamo DATE NOT NULL,
+    Fecha_Devolucion DATE NOT NULL,
+    Estado ENUM('pendiente', 'devuelto', 'retraso') NOT NULL,
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario) ON DELETE CASCADE,
+    FOREIGN KEY (ID_Libro) REFERENCES Libro(ID_Libro) ON DELETE CASCADE
+);
+
+CREATE TABLE Reserva (
+    ID_Reserva INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Usuario INT,
+    ID_Libro INT,
+    Fecha_Reserva DATE NOT NULL,
+    Estado ENUM('activa', 'vencida') NOT NULL,
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario) ON DELETE CASCADE,
+    FOREIGN KEY (ID_Libro) REFERENCES Libro(ID_Libro) ON DELETE CASCADE
+);
+
+CREATE TABLE Administrador (
+    ID_Administrador INT PRIMARY KEY AUTO_INCREMENT,
+    Admin_user VARCHAR(255) NOT NULL,
+    Contraseña VARCHAR(255) NOT NULL,
+    Permisos ENUM('gestionar_libros', 'gestionar_usuarios', 'gestionar_prestamos', 'todos') NOT NULL
+);
+INSERT INTO Libro (Titulo, Autor, Editorial, Año_Publicacion, Genero, ISBN, Estado, Cantidad)
+VALUES 
+('Cien Años de Soledad', 'Gabriel García Márquez', 'Editorial Sudamericana', 1967, 'Realismo Mágico', '978-3-16-148410-0', 'disponible', 5),
+('Don Quijote de la Mancha', 'Miguel de Cervantes', 'Editorial Planeta', 1605, 'Ficción', '978-84-08-11773-1', 'disponible', 3),
+('1984', 'George Orwell', 'Secker & Warburg', 1949, 'Distopía', '978-0-452-28423-4', 'prestado', 2),
+('El Señor de los Anillos', 'J.R.R. Tolkien', 'George Allen & Unwin', 1954, 'Fantasía', '978-0-618-12902-4', 'mantenimiento', 1);
+
+
+INSERT INTO Usuario (Nombre, Tipo, Telefono, CorreoElectronico)
+VALUES 
+('Juan Pérez', 'estudiante', '555-1234', 'juan.perez@ejemplo.com'),
+('María Gómez', 'docente', '555-5678', 'maria.gomez@ejemplo.com'),
+('Carlos Rodríguez', 'externo', '555-8765', 'carlos.rodriguez@ejemplo.com');
+
+
+INSERT INTO Prestamo (ID_Usuario, ID_Libro, Fecha_Prestamo, Fecha_Devolucion, Estado)
+VALUES 
+(1, 2, '2024-11-01', '2024-11-15', 'pendiente'),
+(2, 3, '2024-11-05', '2024-11-19', 'pendiente'),
+(3, 1, '2024-11-10', '2024-11-24', 'pendiente');
+
+
+
+INSERT INTO Reserva (ID_Usuario, ID_Libro, Fecha_Reserva, Estado)
+VALUES 
+(1, 4, '2024-11-01', 'activa'),
+(2, 1, '2024-11-05', 'vencida'),
+(3, 2, '2024-11-07', 'activa');
+
+
+
+
+INSERT INTO Administrador (Admin_user, Contraseña, Permisos)
+VALUES 
+('admin1', 'password123', 'todos'),
+('admin2', 'admin456', 'gestionar_libros'),
+('admin3', 'admin789', 'gestionar_usuarios');
+
+CREATE TABLE imagenes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    imagen_url VARCHAR(4000) NOT NULL,
+    descripcion varchar(255) NOT NULL
+);
+insert into imagenes(imagen_url,descripcion)value('https://www.penguinlibros.com/mx/4394455-large_default/harry-potter-y-la-camara-secreta-harry-potter-2.webp','harry potter');
+
+insert into imagenes(imagen_url,descripcion)value('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrckP5QO40_Rciz-hcLiIHnl3NcpEqdANYvg&s','don quijote');
+
+
+
+CREATE TABLE Ejemplares (
+    id_ejemplar INT AUTO_INCREMENT PRIMARY KEY,
+    id_libro INT,
+    disponible BOOLEAN DEFAULT TRUE,
+    fecha_ingreso DATE,
+    FOREIGN KEY (id_libro) REFERENCES Libro(id_libro)
+);
+
+
+CREATE TABLE Editoriales (
+    id_editorial INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_editorial VARCHAR(255) NOT NULL,
+    direccion VARCHAR(255),
+    telefono VARCHAR(50)
+);
+create table generos(
+id int primary key auto_increment,
+nombre varchar(100) not null
+);
+
+create table libros_autores( 
+id_libro int not null,
+id_autor int not null
+);
+
+create table libros_generos( 
+id_libro int not null,
+id_genero int not null
+);
+
+create table devulucion(
+id int primary key auto_increment,
+id_usuario int not null,
+id_libro int not null,
+fecha_devolucion datetime default current_timestamp
+);
+
+
+
+
+
+show tables;
+
+SELECT P.ID_Prestamo, U.Nombre, L.Titulo, P.Fecha_Prestamo, P.Fecha_Devolucion, P.Estado
+FROM Prestamo P
+JOIN Usuario U ON P.ID_Usuario = U.ID_Usuario
+JOIN Libro L ON P.ID_Libro = L.ID_Libro
+WHERE P.Estado = 'pendiente' AND U.ID_Usuario = 1;
+
+
+INSERT INTO Prestamo (ID_Usuario, ID_Libro, Fecha_Prestamo, Fecha_Devolucion, Estado)
+VALUES (1, 2, '2024-11-01', '2024-11-15', 'pendiente');
+
+
