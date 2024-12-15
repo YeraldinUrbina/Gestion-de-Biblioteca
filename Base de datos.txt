@@ -1,0 +1,109 @@
+create database SGB;
+use SGB;
+
+create table if not exists generos(
+id int primary key auto_increment,
+nombre varchar(100) not null
+);
+
+INSERT INTO generos (nombre) 
+VALUES 
+('Cuentos/Clásicos'),
+('Ficción'),
+('No Ficción');
+
+create table if not exists autores(
+id int primary key auto_increment,
+nombre varchar(100) not null
+);
+
+SELECT * FROM usuarios;
+
+INSERT INTO autores (nombre) 
+VALUES 
+('Gabriel García Márquez'),
+('Jane Austen'),
+('J.K. Rowling'),
+('anonimos');
+
+create table if not exists libros(
+id int primary key auto_increment,
+id_autor_es int not null,
+id_genero int not null,
+titulo varchar(100) not null,
+editorial varchar(100) not null,
+anio_publicacion date not null,
+ISBN varchar(100) not null,
+immagen varchar(100) not null,
+estado enum("Disponible","Prestado","Reservado") not null,
+cantidad int not null,
+foreign key (id_autor_es) references autores(id),
+foreign key (id_genero) references generos(id)
+);
+
+create table if not exists libros_autores(
+id_libro int not null,
+id_autor int not null,
+foreign key (id_libro) references libros(id),
+foreign key (id_autor) references autores(id)
+);
+
+create table if not exists libros_generos(
+id_libro int not null,
+id_genero int not null,
+foreign key (id_libro) references libros(id),
+foreign key (id_genero) references generos(id)
+);
+
+create table if not exists usuarios(
+id int primary key auto_increment,
+nombre varchar(100) not null,
+numero_documento int unique not null,
+tipo enum("Estudiante","Docente","Bibliotecario") not null,
+telefono varchar(100) null,
+correo_electronico varchar(100) unique not null,
+contrasena varchar(100) not null
+);
+
+INSERT INTO usuarios (nombre, numero_documento, tipo, telefono, correo_electronico, contrasena) 
+                  VALUES ('Yeriis Urbina',765439765,'Bibliotecario','3028517082','yeriisurbina@gmail.com','2226181207');
+                  
+                  
+
+create table if not exists prestamos(
+id int primary key auto_increment,
+id_usuario int not null,
+id_libro int not null,
+fecha_prestamo datetime default current_timestamp,
+fecha_devolucion date not null,
+foreign key (id_usuario) references usuarios(id),
+foreign key (id_libro) references libros(id)
+);
+
+create table if not exists reservas(
+id int primary key auto_increment,
+id_usuario int not null,
+id_libro int not null,
+fecha_reserva date not null,
+estado enum("Aceptada","Rechazada","Pendiente") not null,
+foreign key (id_usuario) references usuarios(id),
+foreign key (id_libro) references libros(id)
+);
+
+create table if not exists devoluciones(
+id int primary key auto_increment,
+id_usuario int not null,
+id_libro int not null,
+fecha_devolucion datetime default current_timestamp,
+foreign key (id_usuario) references usuarios(id),
+foreign key (id_libro) references libros(id)
+);
+
+create table if not exists ejemplares(
+ id int primary key auto_increment,
+ id_libro int not null,
+ codigo varchar(50) not null,
+ estatus enum("Disponible", "Prestado", "Reservado") not null,
+ foreign key (id_libro) references libros(id)
+);
+
