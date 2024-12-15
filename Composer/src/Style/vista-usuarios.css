@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+header {
+    width: 100%;
+    background: #2c3e50;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+header h2 {
+    margin: 0 auto;
+    font-size: 1.5rem;
+    color: #fff;
+    text-align: center;
+    flex: 1;
+}
+
+header a {
+    text-decoration: none;
+    color: #fff;
+    background: #ff4d4d;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    left: -5%;
+    position: relative;
+}
+
+header a:hover {
+    background: #cc0000;
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+
+main h2 {
+    font-size: 31px;
+    margin-bottom: 20px;
+    color: #6b6565;
+    margin-top: 11%;
+}
+
+
+.add-user {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007BFF;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.add-user:hover {
+    background-color: #0056b3;
+}
+
+
+table {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 16px;
+    background-color: white;
+}
+
+table thead tr {
+    background-color: #4CAF50;
+    color: white;
+}
+
+table th, table td {
+    padding: 9px 70px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+table th {
+    font-size: 18px;
+}
+.eliminar{
+    color: red;
+}
+footer {
+    background-color: #34495e;
+    color: white;
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+}

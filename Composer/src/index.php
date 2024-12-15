@@ -1,28 +1,34 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$controller = isset($_GET['controller']) ? ucfirst($_GET['controller']) : 'home';
+// Obtener controlador y acción desde la URL
+$controller = isset($_GET['controller']) ? ucfirst($_GET['controller']) : 'Home';
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 
-$id = isset($_GET['id']) ? $_GET['id'] : null;
+// Obtener el ID (si existe) desde la URL
+$id = isset($_GET['id']) ? intval($_GET['id']) : null;
 
+// Construir el nombre de la clase del controlador
 $controllerClass = "Estudiante\\Composer\\Controllers\\" . $controller . "Controller";
-$actionMethod = $action;
 
 if (class_exists($controllerClass)) {
     $controllerObject = new $controllerClass();
-    
-    if (method_exists($controllerObject, $actionMethod)) {
-        // Verificar si los datos vienen por GET o POST
-        $params = $_SERVER['REQUEST_METHOD'] === 'POST' ? $_POST : array_slice($_GET, 2);
 
-        // Llamar al método con los parámetros
-        call_user_func_array([$controllerObject, $actionMethod], [$params]);
+    if (method_exists($controllerObject, $action)) {
+        // Manejar solicitudes POST y GET
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Si es POST, pasar datos del formulario
+            $params = [$id, $_POST]; // $id para identificar al usuario, $_POST contiene los datos
+        } else {
+            // Si es GET, pasar solo $id (si aplica)
+            $params = $id ? [$id] : [];
+        }
+
+        // Llamar al método del controlador con los parámetros
+        call_user_func_array([$controllerObject, $action], $params);
     } else {
-        echo "El método '$actionMethod' no existe en el controlador '$controllerClass'.";
+        echo "El método '$action' no existe en el controlador '$controllerClass'.";
     }
 } else {
-    echo "El controlador '$controllerClass' no existe.";
+    echo "El controlador '$controllerClass' no existe.";
 }
-
-

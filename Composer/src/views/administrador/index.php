@@ -37,7 +37,7 @@
     </div>
 
     <footer>
-        &copy; 2024 Biblioteca Digital. Todos los derechos reservados.
+        &copy; 2024 Biblioweb. Todos los derechos reservados.
     </footer>
 </body>
 </html>

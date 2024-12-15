@@ -40,8 +40,15 @@ class UsuarioController
     }
 
     public function edit($id) {
-        $usuario = Usuario::obtenerPorId($id); // Obtener datos del usuario por ID
-        require __DIR__ . '/../views/usuario/edit.php'; // Cargar la vista de edición
+        if (empty($id)) {
+            die("ID no proporcionado.");
+        }
+        
+        $usuario = Usuario::obtenerPorId($id);
+        if (!$usuario) {
+            die("Usuario no encontrado.");
+        }
+        require __DIR__ . '/../views/usuario/edit.php';
     }
 
     public function update($id) {
